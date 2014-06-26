@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Autoreload jquery</title>
+
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+   <script tyep="text/javascript">
+   
+   $(document).ready(function(){
+	     var time = new Date().getTime();
+	     $(document.body).bind("mousemove keypress", function(e) {
+		 time = new Date().getTime();
+	     });
+
+	     function refresh() {
+		 if(new Date().getTime() - time >= 6000) 
+		     window.location.reload(true);
+		 else 
+		     setTimeout(refresh, 1000);
+	     }
+
+	     setTimeout(refresh, 1000);
+    });
+  </script>
+
+  
+</head>
+<body>
+
+
+
+</body>
+</html>
