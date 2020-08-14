@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+			  src="https://code.jquery.com/jquery-3.5.1.js"
+			  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+			  crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        /**
+         * Check for drag when moved minimum 15px
+         * Same time keep track of mouse position while dragging
+         */
+        // Variables to be accessed outside in other functions
+        var dragMouseX;
+        var dragMouseY;
+        var myDragging = false; // true or false
+        var dragDirectionX = false; // left or right
+        var dragDirectionY = false; // top or bottom
+
+        $(".test_area").on("mousedown", function(e) {
+            // Reset some variables on mousedown
+            var lastDirectionCheck = e.timeStamp;
+            var dragStartX = e.pageX;
+            var dragStartY = e.pageY;
+            dragMouseX = e.pageX;
+            dragMouseY = e.pageY;
+            myDragging = false;
+            dragDirectionX = false;
+            dragDirectionY = false;
+
+            // On the move
+            $(".test_area").on("mousemove", function(e) {
+                dragMouseX = e.pageX;
+                dragMouseY = e.pageY;
+
+                // Recalculate drag direction every 200ms in case user changes his mind
+                if (e.timeStamp > (lastDirectionCheck + 200)) {
+                    dragStartX = dragMouseX;
+                    dragStartY = dragMouseY;
+                    lastDirectionCheck = e.timeStamp;
+                }
+
+                // Check for drag when moved minimum 15px in any direction
+                if (!myDragging && Math.abs(dragStartX - dragMouseX) > 15 || Math.abs(dragStartY - dragMouseY) > 15) {
+                    myDragging = true;
+                }
+                if (myDragging) {
+                    // Check drag direction X
+                    if (dragStartX > dragMouseX) dragDirectionX = 'left';
+                    if (dragStartX < dragMouseX) dragDirectionX = 'right';
+
+                    // Check drag direction Y
+                    if (dragStartY > dragMouseY) dragDirectionY = 'top';
+                    if (dragStartY < dragMouseY) dragDirectionY = 'bottom';
+
+                    console.log(dragDirectionX + ' ' + dragDirectionY);
+                }
+            });
+        });
+
+        // Reset some variables again on mouseup
+        $(".test_area").on("mouseup", function() {
+            $(".test_area").off("mousemove");
+            myDragging = false;
+            dragDirectionX = false;
+            dragDirectionY = false;
+            //alert("here");
+        });
+
+    });
+
+    </script>
+
+    <style>
+        .test_area {
+            width: 500px;
+            height: 500px;
+            border: 1px solid #cccccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="test_area">Test area</div>
+    
+</body>
+</html>
